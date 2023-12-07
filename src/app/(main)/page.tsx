@@ -63,7 +63,11 @@ const HomePage = () => {
           <div className="mr-2">
             <Button
               variant="primary"
-              onClick={() => addTodo(state.task, state.date)}
+              onClick={() => {
+                addTodo(state.task, state.date);
+                state.task = "";
+                state.date = "";
+              }}
             >
               <FontAwesomeIcon icon={faPlus} />
             </Button>

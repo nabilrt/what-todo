@@ -1,15 +1,17 @@
 export const todoReducer = (state: any, action: any) => {
   switch (action.type) {
     case "add":
-      return [...state, action.payload];
+      const todos = [...state];
+      return [...todos, action.payload];
     case "delete":
       return state.filter((todo: any) => todo.id !== action.payload);
     case "toggle":
-      return state.map((todo: any) =>
-        todo.id === action.payload
-          ? { ...todo, isCompleted: !todo.isCompleted }
-          : todo
+      const existingTodos = [...state];
+      const index = existingTodos.findIndex(
+        (todo: any) => todo.id === action.payload
       );
+      existingTodos[index].completed = !existingTodos[index].completed;
+      return [...existingTodos];
     case "sort-by-date":
       return [...state].sort(
         (a: any, b: any) =>
