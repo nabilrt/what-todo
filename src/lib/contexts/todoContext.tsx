@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import { todoReducer } from "../reducers/todo-reducer/todoReducer";
 import { TODO_ACTION_PROPS } from "../reducers/todo-reducer/todoReducerActionProps";
+import { v4 as uuidv4 } from "uuid";
 
 type TodoProps = {
   id: number;
@@ -28,7 +29,7 @@ export const TodoContextProvider = ({
   const [state, dispatch] = useReducer(todoReducer, []);
   const addTodo = (task: string, date: string) => {
     const newTodo = {
-      id: state.length + 1, // Generate a unique id based on the array length
+      id: uuidv4(), // Generate a unique id based on the array length
       task: task,
       date: date,
       isCompleted: false,

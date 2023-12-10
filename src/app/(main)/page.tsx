@@ -8,7 +8,13 @@ import Button from "@/modules/button";
 import DateInput from "@/modules/date-input";
 import Input from "@/modules/input";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import React, { ChangeEvent, useReducer, useState } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TodoCard from "@/modules/todo-card";
 import { useTodo } from "@/lib/contexts/todoContext";
@@ -17,6 +23,7 @@ const HomePage = () => {
   const [state, dispatch] = useReducer(formReducer, INITIALINPUTS);
   const [sortBy, setSortBy] = useState<string>("");
   const { addTodo, state: data, sortTodoByDate, sortTodoByLetter } = useTodo();
+  const dateRef = useRef<HTMLInputElement>(null);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -33,6 +40,10 @@ const HomePage = () => {
       sortTodoByDate();
     }
   };
+
+  useEffect(() => {
+    dateRef.current!.min = new Date().toISOString().slice(0, 10);
+  }, []);
 
   return (
     <>
@@ -55,6 +66,7 @@ const HomePage = () => {
           </div>
           <div className="mr-2">
             <DateInput
+              ref={dateRef}
               name="date"
               value={state.date}
               onChange={(e) => handleInput(e)}
@@ -68,6 +80,7 @@ const HomePage = () => {
                 state.task = "";
                 state.date = "";
               }}
+              disabled={!state.task || !state.date}
             >
               <FontAwesomeIcon icon={faPlus} />
             </Button>
